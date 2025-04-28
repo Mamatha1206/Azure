@@ -1,3 +1,4 @@
+21-04-2025
 Cloud: The cloud is a distributed collection of servers that hosts software and infrastructure, and it is accessed over the internet.
 Cloud Computing: Cloud computing refers to the on-demand availability of computing resources, such as data storage, servers, networking capabilities, and software, over the internet.
 Cloud computing enables various operations such as:
@@ -80,7 +81,6 @@ FaaS (Function as a Service):
     A serverless model where small pieces of code (functions) run in response to events, without managing infrastructure.
 Advantages:
     Highly scalable & cost-effective, No server management, Write functions in any language, Great for microservices and event-driven apps
-
 Disadvantages:
     Cold start latency, Limited infrastructure control, Security & scalability concerns
 Example Use Case: 
@@ -196,6 +196,348 @@ How it works:
     Periodically checks if any pods are in a Pending state due to lack of resources.
     If yes, adds more nodes (up to a max limit).
     If nodes are underutilized for a long time, it scales them down.
+Bastion Host:
+Bastion host is a specialized server designed as a secure gateway, providing controlled access to internal, private networks from external networks like the internet.
+A Bastion Host is a server that acts as a gateway between a private network and the public internet. It is used to securely access servers in a private network (e.g., in a VNet). Bastion Hosts are configured with limited access and hardened security to minimize risk.
+Key Characteristics of a Bastion Host: 
+        Publicly reachable via SSH/RDP, secures access to internal resources without public IPs, protected by firewall/NACL/NSG, MFA, and hardened OS settings.
+
+22-04-2025
+
+VNet (Azure):
+        A VNet in Azure is a private network that allows communication between resources such as VMs, databases, and storage within the cloud.
+        A VNet (Azure) or VPC (AWS) is a logically isolated network in the cloud.
+        It allows you to define your own IP address range, subnets, route tables, and security rules.
+Key Features:
+        Custom CIDR blocks (e.g., 10.0.0.0/16)
+        Subnets to divide and organize resources
+        Security control via NSGs (Azure) or NACLs/Security Groups (AWS)
+        Internet Gateway, NAT Gateways, VPNs.
+VNet/VPC Peering:
+        Allows virtual networks to connect to each other and share resources. It is typically used when resources are distributed across multiple VNets/VPCs.
+        VNet Peering is the process of connecting two virtual networks so they can communicate privately, just like one network.
+        It lets resources in different VNets talk to each other (like a VM in VNet A accessing a database in VNet B).
+        The communication is secure, low-latency, and doesn’t go over the public internet.
+        It’s like building a private tunnel between two highways (VNets).
+Benefits of VNet/VPC Peering:
+        Private traffic (no exposure to internet).
+        Low latency and high bandwidth.
+        No need for VPNs between VNets.
+        Easy to set up and manage.
+A Virtual Machine (VM):
+    Is a software-based emulation of a physical computer. It runs an operating system and applications just like a real computer, but it does so inside a host system using virtualization technology.
+Key Points:
+        Isolated Environment: Each VM operates independently, with its own OS, resources (CPU, memory, storage), and applications.
+        Runs on a Hypervisor: A hypervisor (like VMware, Hyper-V, or KVM) manages and runs multiple VMs on a single physical host.
+        Used For: Development, testing, running legacy apps, hosting services, and scaling cloud environments.
+        Popular in Cloud: In platforms like Azure or AWS, VMs are on-demand and can be scaled based on need.
+Express Gateways :
+Express Gateway is an open-source API Gateway built entirely on top of Node.js and the popular Express.js framework. It’s designed to manage microservices APIs, offering features like authentication, rate-limiting, logging, and monitoring — all easily configured using a simple YAML file.
+NAT Gateway: 
+A NAT Gateway (Network Address Translation Gateway) is a resource in Azure that enables outbound internet access for resources in a private subnet—without exposing them to incoming traffic from the internet.
+What Does It Do :
+        Allows virtual machines, containers, or other services in private subnets to make outbound connections to the internet (downloading updates, calling APIs).
+        Prevents inbound connections, ensuring resources stay secure and private.
+VM Scale Sets (VMSS) :
+A Virtual Machine Scale Set (VMSS) is an Azure compute service that lets you deploy and manage a group of identical, load-balanced virtual machines.
+VM Scale Sets help you automatically scale out (add more VMs) or scale in (remove VMs) based on demand.
+How VMSS Works:
+1. You define a scale set configuration:
+        o VM image (Ubuntu, Windows Server, etc.)
+        o VM size (e.g., Standard_B2s)
+        o Autoscaling rules (CPU > 75%, scale out; CPU < 30%, scale in)      
+        o Network settings (subnet, NSG, load balancer)
+2. Azure creates the initial number of VMs (e.g., 2).
+3. Traffic is routed through a load balancer to the VMs.
+4. When demand increases, Azure adds more VMs to handle traffic.
+5. When demand drops, Azure removes unnecessary VMs, saving cost.
+When to Use VM Scale Sets
+Use cases:
+        · High-traffic web applications
+        · API backends
+        · Microservices
+        · Stateless services
+        · Batch processing
+Not ideal for:
+        · Stateful apps without external storage
+        · Apps needing persistent local storage
+Fault Domain:
+A Fault Domain is a logical grouping of hardware resources (like power supply, network, and physical servers) within a data center that shares a single point of failure.
+Purpose:
+It protects your VMs from hardware failures. When you deploy multiple VMs, Azure distributes them across fault domains to avoid all your VMs being affected by a single failure.
+Example:
+If you deploy 3 VMs and specify 2 fault domains:
+        · VM1 goes to Fault Domain 1
+        · VM2 goes to Fault Domain 2
+        · VM3 goes back to Fault Domain 1
+So, if Fault Domain 1 fails (e.g., power outage), only VM1 and VM3 are affected — not all VMs.
+What is an Update Domain:
+An Update Domain is a logical group used to separate VMs for software or OS updates to ensure availability during maintenance.
+Purpose:
+Azure uses Update Domains to roll out updates one group at a time, not all at once, reducing downtime.
+Example:
+If you have 5 VMs and 3 update domains:
+        · VM1 → Update Domain 1
+        · VM2 → Update Domain 2
+        · VM3 → Update Domain 3
+        · VM4 → Update Domain 1
+        · VM5 → Update Domain 2
+Azure updates one domain at a time, waits for success, then proceeds. So, your app stays online during updates.
+SSD (Solid State Drive):
+        SSD is a type of high-speed storage that uses flash memory. In cloud computing, SSDs are used for performance-intensive applications.
+HDD (Hard Disk Drive): 
+        HDDs are mechanical drives that store data magnetically. They're slower than SSDs but much cheaper.
+Feature       SSD                 HDD
+Speed         Very fast         Slower
+Cost            High             Low
+Use Case       Databases      VMs Backups, cold storage
+Ephemeral Storage: 
+        Ephemeral storage is temporary disk space attached to a virtual machine. It is non-persistent — meaning the data is lost when the VM is stopped or deallocated.
+
+23-04-2025
+
+What is a Subnet:
+A subnet (subnetwork) is a smaller, logical section of a larger network (like a VPC in AWS or VNet in Azure). It helps divide a big network into smaller, manageable chunks.
+Why Do We Use Subnets:
+        · To organize and isolate resources (e.g., frontend vs backend).
+        · To apply security rules (e.g., NSGs or firewalls) on specific subnets.
+        · To control traffic flow and improve performance.
+What is Subnetworking (Subnetting) :
+Subnetworking, also known as subnetting, is the practice of dividing a larger IP network into smaller, manageable subnets. This allows better control of traffic flow, more efficient IP address usage, and improved network security
+Benefits of Subnetting
+        1. Improved Security – Restrict access between subnets with firewalls or NSGs.
+        2. Better Performance – Reduced broadcast domains = faster network.
+        3. Efficient IP Usage – No waste of IPs; assign based on exact need.
+        4. Scalability – Makes large networks easier to manage and expand
+Azure Use Case: Subnets are part of a VNet (Virtual Network). Subnetwork Example:
+to create networks we need cidr 
+we have three 
+10.0.0.0/24->10.0.0.0-----10.0.0.255 32-24=8 2^8=256 
+10.0.0.0/24 ---> 10.0.0.0--- 10.0.0.255
+network--        1    2    4     8     16     32     64    128      256
+host--           256  128  64    32     16    8      4      2        1
+subnet mask--    /24  /25  /26   /27   /28    /29   /30     /31      /32
+
+we are dividing these into 4 ways: 10.0.0.0
+TEAMS     ip range                      newtwork id              boardcast id                   cidr
+
+A---  10.0.0.1---10.0.0.62               10.0.0.0                 10.0.0.63                   10.0.0.0/26      
+
+B---  10.0.0.65---10.0.0.126             10.0.0.64                10.0.0.127                  10.0.0.64/26 
+
+C---  10.0.0.129---10.0.0.190            10.0.0.128               10.0.0.191                  10.0.0.128/26 
+
+Azure Web App :
+Azure Web App (part of Azure App Service) is a PaaS (Platform as a Service) offering that allows developers to build and host web apps, APIs, and mobile backends in a fully managed environment. 
+It takes care of infrastructure management, such as server maintenance, patching, load balancing, scaling, and security — so we can focus on writing code.
+Key Features of Azure Web App: Multiple Language Support, Built-in CI/CD Integration, Scaling and Load Balancing, Global Availability, Custom Domains & SSL, Security & Authentication, Monitoring & Diagnostics, Backup and Restore, Deployment Slots.
+Use Cases:
+        · Hosting dynamic websites or web applications
+        · Running backend APIs for mobile or web apps
+        · Creating portals or dashboards
+        · Integrating with Logic Apps, Functions, and databases
+Benefits :
+        · No infrastructure management
+        · Quick deployments
+        · Highly scalable
+        · Cost-effective (pay-as-you-go model)
+        · Enterprise-grade security
+
+Azure Subscription:
+An Azure Subscription is essentially a logical container for your Azure resources. It is the boundary within which Azure resources (such as virtual machines, databases, web apps, etc.) are created and managed. A subscription allows users to manage and organize their resources based on different factors such as project, department, or environment (production, development, etc.).
+Azure Resource Groups:
+An Azure Resource Group is a container that holds related Azure resources. Resources within the same resource group share a lifecycle, meaning you can manage, update, and delete them together.
+Resource groups are useful for organizing and managing your Azure resources in a logical, structured way.
+Key Points about Azure Resource Groups:
+        · Resource Organization
+        · Management and Deployment
+        · Access Control
+        · Resource Lifecycle
+        · Geographical Location
+        · Tagging
+
+LAB: Virtual Machine Setup and Network Configuration
+Step 1: Creating a New User in Microsoft Entra ID
+Microsoft Entra ID (formerly Azure Active Directory) allows you to manage identities and access in Azure. Creating a user is essential for assigning roles and securing access.
+Step-by-Step Guide to Create a New User
+1. Sign in to Azure Portal
+        •	Go to https://portal.azure.com
+        •	Sign in with your administrator credentials.
+2. Navigate to Microsoft Entra ID
+        •	In the left-hand menu or search bar, type “Microsoft Entra ID” or “Azure Active Directory”.
+        •	Click on Microsoft Entra ID to open the directory.
+3. Go to Users Section
+        •	In the Microsoft Entra ID pane, click on “Users” from the left sidebar.
+        •	Then click on “+ New user” at the top.
+4. Choose User Type
+        •	Select “Create new user” (default).
+        •	You can also choose to invite an external user if needed (for B2B collaboration).
+5. Fill in User Details
+        •	User name: Enter a unique username (e.g., devuser@yourdomain.onmicrosoft.com)
+        •	Name: Enter the full name of the user.
+        •	Optionally, you can add additional details such as:
+                    o	Job Title
+                    o	Department
+                    o	Usage location
+6. Set Password
+        •	Azure will auto-generate a temporary password.
+        •	You can also set a custom password.
+        •	Make sure to note down the password, as the user will be prompted to change it at first login.
+7. Assign Groups or Roles (Optional)
+        •	You can assign the user to specific groups or roles:
+            o	Example: Assign as Contributor, Reader, or Virtual Machine Operator.
+        •	To assign roles:
+                o	Click on “Roles” > “+ Add assignment” > choose a role.
+8. Review and Create
+        •	Review all entered information.
+        •	Click “Create”.
+Result
+The user is now created and can:
+        •	Log in via the Azure Portal
+        •	Access only the assigned resources
+        •	Be used for managing permissions on virtual machines, networks, storage, etc
+--------------------------------------------------------------------------------------------------
+Task : Creating the Virtual Network and Virtual Machines
+Virtual Network (VNet)
+        •	Create a Virtual Network to logically group and connect all virtual machines (VMs).
+        •	This allows communication between VMs in the same VNet.
+Virtual Machines
+        •	Create three VMs:
+            o	Frontend VM (Public)
+            o	Backend VM (Intermediate)
+            o	Private VM (Internal-only)
+        •	Assign each VM to the same virtual network but place them in appropriate subnets (e.g., public, private).
+Network Security Groups (NSGs)
+Creation
+        •	Create two NSGs:
+            o	Public NSG (for Frontend and Backend)
+            o	Private NSG (for Private VM)
+Association and Disassociation
+        •	Stop each VM to safely change its NIC (Network Interface Card) settings.
+        •	Disassociate the NICs from default NSGs if any.
+        •	Re-associate the correct NSG:
+            o	Public NSG → Frontend and Backend
+            o	Private NSG → Private VM
+Configuring NSG Rules
+Private NSG – Inbound Rules
+        •	Priority 120 → Deny All traffic (to ensure security).
+        •	Priority 110 → Allow SSH or specific internal traffic (to allow internal VM communication).
+Public NSG – Inbound Rules
+        •	Priority 105 → Allow SSH (port 22) to access the Frontend VM from your local system.
+Key Insertion and SSH Connections
+Step-by-Step SSH Access
+1.	From Local to Frontend:
+        o	Use SSH key to connect to the Frontend VM from your local machine:
+            -	ssh -i keyname.pem username@frontend-ip
+2.	Copy Key from Frontend to Backend:
+        o	Use SCP to copy the SSH key:
+            -	scp -i keyname.pem keyname.pem username@backend-ip:/home/username/
+        o	Then SSH into the Backend from the Frontend:
+            -	ssh -i keyname.pem username@backend-ip
+3.	From Backend to Private VM:
+        o	Use SSH again (use the Private VM’s private IP if in same VNet):
+            -	ssh -i keyname.pem username@private-ip
+Note: If VMs are in the same VNet, you don’t need a public IP to SSH internally.
+
+Microsoft Entra ID (Formerly Azure Active Directory)
+Microsoft Entra ID (formerly Azure Active Directory, or Azure AD) is a cloud-based identity and access management service. It helps organizations securely manage and control access to resources.
+Key Features:
+        · Identity Management: Manages user identities and access permissions.
+        · Single Sign-On (SSO): Users can access multiple applications with one login.
+        · Multi-Factor Authentication (MFA): Adds an extra layer of security.
+        · Conditional Access: Restricts or allows access to applications based on user conditions (location, device, etc.).
+        · Integration: Integrates with various third-party applications and services.
+Use Cases:
+        · Providing secure access to cloud and on-premises resources.
+        · Managing employee and contractor access to enterprise applications.
+        · Securing APIs and services in the cloud.
+Azure App Services
+Azure App Services is a fully managed platform for building, deploying, and scaling web apps, mobile backends, and APIs.
+Key Features:
+        · Auto-Scaling: Automatically scales web apps based on demand.
+        · Integration: Supports integration with databases, caching, and other Azure services.
+        · Multi-language Support: Supports .NET, Node.js, Python, Java, and more.
+        · Security Features: Provides built-in authentication, authorization, and SSL certificates.
+Use Cases:
+        · Hosting web applications (e-commerce sites, content management systems).
+        · Running REST APIs for mobile or web applications.
+        · Hosting serverless backends.
+Azure Storage Accounts
+Azure Storage Accounts provide scalable, durable, and secure cloud storage for various types of data. It supports data such as blobs, files, queues, and tables.
+Key Features:
+        · Blob Storage: For storing large amounts of unstructured data, like images, videos, backups.
+        · File Storage: Offers shared storage for legacy applications.
+        · Queue and Table Storage: For message queues and NoSQL-like database solutions.
+        · Durability and Availability: Multiple replication options to ensure data durability and availability.
+Use Cases:
+        · Storing application data, backups, and media files.
+        · Providing file share services to on-premises applications.
+        · Storing large datasets for Big Data and analytics.
+Azure SQL Databases
+Azure SQL Database is a fully managed relational database service based on SQL Server. It offers high availability, automatic scaling, and built-in security.
+Key Features:
+        · Automated Backups: SQL Database automatically handles backups and restores.
+        · Scalable Performance: Can scale resources dynamically based on workload demands.
+        · Security: Includes built-in encryption and firewall protection.
+        · High Availability: Built-in features like auto-failover groups for high availability.
+Use Cases:
+        · Hosting applications that require a relational database.
+        · Storing business-critical transactional data.
+        · Running analytics on structured data.
+Cost Management in Azure
+Azure Cost Management is a tool to monitor and control your Azure spending. It provides insights into where and how costs are incurred, and helps you optimize your spending.
+Key Features:
+        · Cost Analysis: Helps visualize and analyze costs by resource, resource group, subscription, etc.
+        · Budgets: Set up budgets for different teams, departments, or projects to avoid overspending.
+        · Cost Recommendations: Provides insights on how to optimize costs, such as resizing underused resources.
+        · Forecasting: Predict future costs based on historical data.
+        · Alerts: Set up cost alerts to notify you when spending approaches a defined limit.
+Use Cases:
+        · Monitoring Azure resource usage and expenditures.
+        · Optimizing cloud resources to reduce unnecessary costs.
+        · Setting and tracking budgets for departments or project.
+Azure Regions:
+    An Azure Region is a geographic area that contains at least one (usually multiple) data centers located nearby each other.
+Purpose:
+    Regions allow users to deploy applications closer to their users for better performance and compliance with data residency laws.
+Examples of Azure Regions:
+    East US, West Europe, Southeast Asia, Central India
+Key Points:
+    Each region is independent (except for paired regions used for disaster recovery).
+    Data residency — Some regions are set up to meet local government regulations about where data must reside.
+    Latency and redundancy — Users choose regions based on proximity and fault tolerance needs.
+
+Azure Availability Zones
+    Availability Zones are physically separate data centers within the same Azure Region.
+    Each zone has independent power, cooling, and networking.
+Purpose:
+    They protect applications and data from data center-level failures (e.g., power outage, natural disaster).
+Structure:
+    A region with Availability Zones will typically have at least three zones.
+    Azure replicates services across zones if you configure them for zone redundancy.
+Use Cases:
+    Deploying VMs across zones for high availability.
+    Hosting critical databases with synchronous replication across zones.
+    Ensuring minimal downtime even if an entire data center goes offline.
+Important Note:
+    Not all regions support Availability Zones — only major regions do (e.g., East US 2, West Europe, Southeast Asia).
+
+Azure Availability Sets
+    An Availability Set is a logical grouping of Virtual Machines (VMs) within a single data center (inside a region).
+Purpose:
+    It ensures that VMs are distributed across multiple Fault Domains and Update Domains, protecting against hardware failures and maintenance events.
+Key Concepts:
+Fault Domain:
+    Grouping of hardware that shares the same power source and network switch. If a fault domain fails (e.g., power outage), only VMs in that domain are affected.
+Update Domain:
+    Grouping of VMs that can be updated together. Azure updates only one update domain at a time to minimize downtime.
+Example:
+    If you create 5 VMs in an availability set configured with 2 fault domains and 5 update domains:
+    VMs will be spread across different hardware racks (fault domains).
+    During updates, Azure ensures that only one update domain (and therefore a subset of VMs) is rebooted at a time.
+Best for:
+    Traditional, non-distributed applications that require VM redundancy within a single region.
+    Cost-effective high availability without zone-level resilience.
 
 
 
@@ -264,7 +606,7 @@ Choosing a Regional Pair:
     Compliance Requirements: Ensure data storage meets regulatory requirements in specific regions.
     Proximity to End-Users: Choose a region closer to your target audience to reduce latency.
     Cost Implications: Balance costs associated with inter-region data transfer and redundancy.
-Azure Global Network "
+Azure Global Network :
     Is a high-performance, low-latency, and highly resilient network that connects Azure’s global data centers, ensuring seamless communication across regions. It provides the foundation for Azure’s services and enables global applications to scale efficiently, with enhanced performance, security, and availability.
 Key Features of Azure Global Network:
     Global Connectivity: Fast, secure data transfer across 60+ regions.
@@ -458,6 +800,131 @@ Step 3:
 Step 4:
     Click “Review + Create”
     Then click “Create” to finalize
+
+25-04-2025
+Eventual Consistency:
+Eventual Consistency is a consistency model used in distributed systems, where the system guarantees that, in the absence of further updates, all replicas of the data will eventually converge to the same value.
+It is widely used in highly available, distributed databases and cloud systems where immediate consistency is not required.
+Key Characteristics: Asynchronous Replication, Temporary Inconsistency, Convergence, High Availability, Low Latency, Conflict Resolution.
+Benefits: Scalability, Performance, Fault Tolerance, Availability.
+Advantages:
+        1.	Highly suitable for large-scale, geo-distributed systems
+        2.	Ensures uptime and responsiveness even when some nodes are unreachable
+        3.	Improves throughput by avoiding bottlenecks of strict synchronization
+        4.	Reduced latency compared to strong consistency systems
+        5.	Works well for use cases where eventual correctness is acceptable, e.g., shopping carts, social media likes.
+Disadvantages:
+        1.	Stale Reads – Clients might read old or inconsistent data
+        2.	Complex Conflict Resolution – Handling concurrent updates can be tricky
+        3.	Not Suitable for All Use Cases – Banking or real-time systems need stronger consistency
+        4.	Difficult Debugging – Bugs can arise due to timing or state mismatches across nodes
+        5.	Increased Application Complexity – Developers may need to design around inconsistencies.
+Azure Reservations:
+        Azure Reservations allow you to pre-purchase Azure resources for a 1-year or 3-year term to receive significant discounts (up to 72%) compared to pay-as-you-        go pricing. You commit to using specific resource configurations (like a VM size in a region) for the duration of the term. 
+Key Characteristics: Term Commitment, Scope, Region-specific, Exchangeable, Refundable, Billing Options.
+Benefits of Azure Reservations: Significant Cost Savings, Predictable Billing, Performance Guarantee, Flexible Scope.
+Limitations / Considerations: Less Flexibility, Unused Reservations Still Cost Money, Not Ideal for Short-Term or Bursty Workloads, Region-specific.
+Best Use Cases: Long-running workloads, Predictable usage patterns, Enterprise apps with fixed infrastructure needs, Cost optimization for Dev/Test environments.
+Azure Saving Plans:
+Azure Savings Plans are flexible pricing models that allow you to save up to 65% on compute services by committing to a fixed hourly spend (e.g., $10/hour) for a 1-year or 3-year term. They apply automatically to eligible compute usage across various regions, VM sizes, and services.
+Key Characteristics: Term Duration, Commitment Type, Scope, Flexibility, Applicable Services, Payment Options, Auto-application, Not Resource-Specific.
+Benefits: Cost Savings, High Flexibility, Automatic Optimization, Predictable Spend, No Lock-In to Specific Resources.
+Advantages: Very Flexible, Discounts Apply Automatically, Simple Budgeting, Ideal for Dynamic Workloads, Shared Across Resources.
+Disadvantages: Fixed Hourly Commitment, No Savings Outside Compute, Not Ideal for Small Workloads, Limited to Certain Services, No Capacity Guarantee.
+Best Use Cases: Dynamic or unpredictable workloads, Organizations using a mix of VM sizes/types, Developers using modern compute options.
+
+
+Azure CLI :
+Authentication & Account Info      Command	Purpose
+az login - Login to your Azure account via CLI
+az --version - Check the installed Azure CLI version
+az account list	- List all Azure subscriptions associated with your account
+az account list --output table - List subscriptions in table format for easier readability
+az account set --subscription "<subscription-id>"	- Set the active subscription for your current session
+Configuration Settings
+Command	                        Purpose
+az config set defaults.group="mamatha-rg"	- Set a default resource group so you don’t need to specify it each time
+az config get defaults	- Show the current default configuration values
+Resource Groups
+Command	                       Purpose
+az group list --help	- Get help/documentation for listing resource groups
+az group list --query "[?location=='centralindia']"	- Filter resource groups located in Central India
+az group list --query "[?name=='mamatha-rg']"	- Filter and find a specific resource group by name
+az group list --query "[].name" --output tsv	- Get a simple list of all resource group names in plain text format
+Virtual Machines
+Command	                           Purpose
+az vm list	- List all VMs in your subscription (empty list if none running)
+az vm list -g Admin-Azure	- List VMs within the Admin-Azure resource group
+az vm list -g Admin-Azure --query "[].name" --output tsv	- List VM names only
+az vm list -g Admin-Azure --query "[].{Name:name}" --output tsv	- List VM names with custom field
+az vm list -g Admin-Azure --query "[].{Name:name, ResourceGroup:resourceGroup}" --output tsv	- List VM names with their resource groups
+Storage Accounts
+Command	                           Purpose
+az storage account list -g <resourcegroupname>	- List storage accounts in a specific resource group
+env | grep -i storage
+VM Sizes & SKUs
+Command	                           Purpose
+az vm list-skus --location centralindia --query "[?starts_with(name,'Standard_DS')]" --output table	- List available VM SKUs in Central India starting with Standard_DS (popular for Dev/Test workloads)
+
+Authentication and Subscription Context using powershell :
+    •	Logged in using Connect-AzAccount -UseDeviceAuthentication (because you're in a non-interactive session).
+    •	Viewed your current context using Get-AzContext.
+    •	Set your active subscription using:
+            -	Set-AzContext -Subscription "bf7e75db-e819-49ca-b6d2-69c32a2353fe"
+            -	Select-AzSubscription -SubscriptionId "bf7e75db-e819-49ca-b6d2-69c32a2353fe"
+Working with Resource Groups
+List all resource groups:
+            -	Get-AzResourceGroup
+Filter by location (e.g., Central India):
+            -	Get-AzResourceGroup | Where-Object { $_.Location -eq "centralindia" }
+Get a specific RG:
+            -	Get-AzResourceGroup -Name "mamatha-rg"
+
+Creating a Virtual Machine in Azure PowerShell:
+Here’s a step-by-step example to create a VM inside the mamatha-rg resource group:
+Step 1: Define parameters
+        $rg = "mamatha-rg"
+        $location = "centralindia"
+        $vmName = "MamathaVM"
+        $cred = Get-Credential
+Step 2: Create a virtual network and subnet
+        -	$subnetConfig = New-AzVirtualNetworkSubnetConfig -Name "mySubnet" -AddressPrefix "10.0.0.0/24"
+        -	$vnet = New-AzVirtualNetwork -Name "myVnet" -ResourceGroupName $rg -Location $location -AddressPrefix "10.0.0.0/16" -Subnet $subnetConfig
+Step 3: Create a public IP
+        -	$pip = New-AzPublicIpAddress -Name "myPublicIP" -ResourceGroupName $rg -Location $location -AllocationMethod Dynamic
+Step 4: Create a network interface
+        -	$nic = New-AzNetworkInterface -Name "myNIC" -ResourceGroupName $rg -Location $location -SubnetId $vnet.Subnets[0].Id -PublicIpAddressId $pip.Id
+Step 5: Configure VM and create it
+        -	$vmConfig = New-AzVMConfig -VMName $vmName -VMSize "Standard_DS1_v2" |
+        -	Set-AzVMOperatingSystem -Windows -ComputerName $vmName -Credential $cred -ProvisionVMAgent -EnableAutoUpdate |
+        -	Set-AzVMSourceImage -PublisherName "MicrosoftWindowsServer" -Offer "WindowsServer" -Skus "2019-Datacenter" -Version "latest" |
+        -	Add-AzVMNetworkInterface -Id $nic.Id
+        -	New-AzVM -ResourceGroupName $rg -Location $location -VM $vmConfig
+To remove everything at once, including:
+        •	Virtual Machines
+        •	Storage Accounts
+        •	Network Security Groups
+        •	All other resources
+Just run this single PowerShell command:
+        -	Remove-AzResourceGroup -Name "mamatha-rg" -Force
+
+Roles define a set of permissions that can be assigned to users, groups, service principals, or managed identities to control access to Azure resources.
+Roles
+--identity
+--users
+--group
+--service principles
+
+RBAC Scope Levels or Azure hierarchy :
+Management Groups → Organize multiple subscriptions, apply policies and access control.
+Subscriptions → Billing boundaries; where resources are created and billed.
+Resource Groups → Logical containers to group related resources together.
+Resources → Actual Azure services like VMs, Storage accounts, Databases, etc.
+
+
+
+
+
 
 
 
