@@ -133,5 +133,135 @@ Benefits of Azure Resource Manager
     Tagging & Cost Control
 Azure Bicep
     Azure Bicep is a Domain Specific Language (DSL) for deploying Azure resources. It is a more concise, readable alternative to ARM (Azure Resource Manager) templates, designed to simplify the process of writing and managing Infrastructure as Code (IaC) in Azure.
+Features of Bicep :
+    Readable Syntax: YAML-like clarity, but strongly typed.
+    Modular: Use module keyword to reuse code.
+    Built-in Type Safety and IntelliSense.
+    Automatic Dependency Handling
+    Source Control Friendly
+    Tooling: Great support in Visual Studio Code
+    Azure Subscriptions – Complete Guide
+Benefits of Azure Bicep:
+    Increased Productivity: Simplified syntax allows faster infrastructure code development.
+    Enhanced Readability: Bicep's concise syntax improves code clarity and maintenance.
+    Native Integration: Seamlessly integrates with Azure’s deployment tools and services.
+    Improved Code Quality: Linting, strong typing, and modules help improve code quality.
+    Compatibility: Generates ARM templates compatible with existing Azure tooling.
+How to Use Azure Bicep:
+    Install Bicep CLI: Install the Bicep CLI tool via Azure CLI or from GitHub.
+    Write a Bicep File: Create a .bicep file to define infrastructure resources.
+    Compile to ARM Template: Use the Bicep CLI to convert the .bicep file to an ARM template.
+    Deploy with Azure CLI: Deploy the ARM template using Azure CLI, PowerShell, or the Azure Portal.
+Azure Subscriptions: An Azure subscription is an agreement with Microsoft to use Azure services, which acts as a container for managing and organizing resources, billing, and access control. It provides a logical boundary for Azure services, and each subscription has its own billing, resource limits, and access permissions.
+Why Azure Subscriptions Are Necessary: Azure subscriptions are necessary to organize, manage, and allocate resources effectively, ensuring proper billing, access control, and resource management. They also provide a structure for applying quotas and limits to prevent overuse of resources.
+Types of Azure Subscriptions: 
+    Pay-As-You-Go
+    Enterprise Agreement (EA)
+    Cloud Solution Provider (CSP)
+    Microsoft Customer Agreement (MCA)
+    Dev/Test Subscription
+    Visual Studio Subscription
+Managing Azure Subscriptions: 
+    Azure Portal
+    Azure CLI/PowerShell
+    Azure Cost Management
+    Role-Based Access Control (RBAC)
+    Subscription Management API
+Azure Account:
+    An Azure account is the basic entity used to access Azure services and manage resources. It is associated with a user identity and provides access to various         Azure services, subscriptions, and billing.
+    It allows you to manage resources, monitor usage, set up billing, and access services like VMs, storage, networking, databases, and more.
+Key Components of an Azure Account:
+    Microsoft Account or Work/School Account
+      - Your identity to sign in (like yourname@outlook.com or yourorg.com account).
+    Azure Subscription
+      - A container for billing, services, and resource management.
+      - You can have multiple subscriptions under one Azure account.
+      -	Each subscription has resource quotas, billing details, and role-based access control (RBAC).
+    Directory (Microsoft Entra ID)
+        - Azure uses Microsoft Entra ID (formerly Azure AD) to manage users and access across subscriptions and resources.
+Azure Billing:
+    Azure billing refers to the process of charging for the usage of Azure services based on consumption. It includes tools to manage subscription costs, track           usage, and generate invoices for Azure services consumed.
+Important Azure Billing Tools:
+      Cost Analysis: Visualizes where you’re spending money (by service, region, resource).
+      Budgets and Alerts: Set spending limits and get alerts when you approach them.
+      Invoices & Usage Reports: Download detailed usage and invoice data.
+Azure Pricing Calculator:
+    The Azure Pricing Calculator is a web-based tool that helps estimate the cost of Azure services based on different configurations and usage patterns. It allows       users to select specific services, set usage parameters, and calculate projected costs.
+Key Features of Azure Pricing Calculator:
+    Comprehensive Service Selection
+    Cost Estimation and Comparison
+    Customizable Configurations
+    Interactive Pricing
+    Export Pricing Estimate
+Benefits of Using Azure Pricing Calculator:
+    Cost Estimation Accuracy
+    Budgeting and Financial Planning
+    Scenario Testing
+    Optimizing Resource Usage
+    Managing Multiple Azure Subscriptions
+How to Use Azure Pricing Calculator:
+    Selecting Azure Services
+    Configuring Resources
+    Viewing Pricing Breakdown
+    Saving and Sharing Estimates
+How to Access the Azure Pricing Calculator:
+    Via Azure Portal
+    Using Direct URL
+Example Use:
+If we want to estimate the cost of running a Virtual Machine:
+    1.	Go to the Azure Pricing Calculator
+    2.	Select Virtual Machines
+    3.	Choose:
+        o	Region (e.g., Central India)
+        o	OS (Linux/Windows)
+        o	VM Size (e.g., B1s)
+        o	Hours per month
+        o	Storage type and amount
+    4.	It shows the estimated monthly cost\
+
+
+LAB: VNET PEERING:
+Step 1: Created Two Virtual Networks (VNets)
+    -	az network vnet create --resource-group mamatha-rg --name mamatha-vnet-1 --address-prefixes 10.11.0.0/16
+    -	az network vnet create --resource-group mamatha-rg --name mamatha-vnet-2 --address-prefixes 10.12.0.0/16
+Step 2: Created Subnets in Each VNet
+    -	az network vnet subnet create --resource-group mamatha-rg --vnet-name mamatha-vnet-1 --name mamatha-sub1 --address-prefix 10.11.0.0/24
+    -	az network vnet subnet create --resource-group mamatha-rg --vnet-name mamatha-vnet-2 --name mamatha-sub2 --address-prefix 10.12.0.0/24
+Step 3: Created Two VM’s 
+    - az vm create --resource-group mamatha-rg  --name mamatha-vm-1 --location eastus --image "Ubuntu2204" --size Standard_B1s --vnet-name mamatha-vnet-1 --subnet        mamatha-sub1 --admin-username mamatha --admin-password 'mamathaeudulakanti@24'
+    - az vm create --resource-group mamatha-rg --name mamatha-vm-2 --location eastus --image "Ubuntu2204" --size Standard_B1s --vnet-name mamatha-vnet-2 --subnet         mamatha-sub2 --admin-username mamatha-1--admin-password 'mamathaeudulakanti@24'
+Step 4: Two Networks Security Groups will be created for two VM’s.
+Step 5: For both NSG’s allow ICMP protocol for the purpose of communication .
+Step 6: We will create peering for the vnet1-vnet2 and vnet2-vnet 1
+    - az network vnet peering create --name VNet-1-to-VNet-2 --resource-group mamatha-rg --vnet-name mamatha-vnet-1 --remote-vnet mamatha-vnet-2 --allow-vnet-access
+    - az network vnet peering create --name VNet-2-to-VNet-1 --resource-group mamatha-rg --vnet-name mamatha-vnet-2 --remote-vnet mamatha-vnet-1 --allow-vnet-access
+Step 7 : To check whether peering has been done or not :
+From Vm1: ping private ip of Vm2
+    -	ping 10.12.0.4
+In VM2: ping@private ip of Vm1
+    -	ping 10.11.0.4
+
+
+Task: Create a New User in Azure (Entra ID)
+Step 1:
+    - Go to Microsoft Entra ID (formerly Azure AD)
+    - Click on “+ Add” → Select “User” → Choose “Create new user”
+Step 2:
+    Fill in all required details:
+    •	User name
+    •	Name
+    •	Password settings (Auto-generated or custom)
+Step 3:
+    Optionally assign user to a group (e.g., DevOpsTeam, Admins, Developers)
+Step 4:
+    Click “Review + Create”
+    Then click “Create” to finalize
+
+
+
+
+
+
+
 
 
