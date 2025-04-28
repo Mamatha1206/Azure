@@ -921,6 +921,46 @@ Subscriptions → Billing boundaries; where resources are created and billed.
 Resource Groups → Logical containers to group related resources together.
 Resources → Actual Azure services like VMs, Storage accounts, Databases, etc.
 
+26-04-2025:
+Azure Functions App:
+    An Azure Function is a serverless compute service that allows you to run event-driven code without managing infrastructure. It's useful for small tasks like processing data, running background jobs, responding to HTTP requests, or triggering workflows.
+Steps to Create Azure Function for Automation:
+1. Create an Azure Function App:
+        - Go to the Azure Portal.
+        - In the left menu, select Create a resource > Compute > Function App.
+        - Fill in the required details (name, resource group, region, and runtime stack).
+        - Click 'Review + Create' and then Create.
+2. Create a Function Inside the Function App:
+        - Once the Function App is created, navigate to it.
+        - Under Functions, select + Add to create a new function.
+        - Choose a template (e.g., HTTP trigger, Timer trigger, etc.) depending on your use case.
+3. Write the Automation Code:
+    For example, if you want to trigger a function on a schedule (cron-like), use a Timer Trigger.
+    Define your function logic to automate tasks (e.g., interacting with Azure resources, processing data, etc.).
+4. Deploy the Function:
+    After writing your function code, click Deploy or test it using the built-in editor in the portal.
+5. Configure Triggers:
+    You can set your function to be triggered by HTTP requests, events, timed schedules, or other Azure services.
+Azure Automation:
+    Azure Automation is a cloud service that allows you to automate manual, long-running tasks such as patch management, VM configuration, and operational tasks. It leverages runbooks, which are collections of automation scripts.
+Steps to Create Automation Using Azure Automation:
+1.Create an Azure Automation Account:
+    Go to the Azure Portal.
+    Select Create a resource > IT & Management Tools > Automation.
+    Provide a name, resource group, and region, and then click Create.
+2.Create a Runbook in Automation:
+    Once the Automation Account is created, navigate to it.
+    Under the Process Automation section, select Runbooks.
+    Click + Create a runbook.
+    Choose a Runbook type (PowerShell, Python, etc.).
+    Write your automation script (e.g., PowerShell script to start/stop VMs, scale services, etc.). Example of PowerShell to start a VM:
+3.Test the Runbook:
+    After creating the runbook, you can test it by clicking Start to ensure the automation works correctly.
+4.Publish the Runbook:
+    Once your script works as expected, publish it to make it available for scheduling or triggers.
+5.Schedule the Runbook:
+    To run the automation task on a schedule, go to the Runbook and select Link to Schedule.
+    Create a new schedule with a cron expression (e.g., once a day, once an hour) and link it to your runbook.
 
 
 
