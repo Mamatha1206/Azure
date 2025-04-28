@@ -1,3 +1,204 @@
+Cloud: The cloud is a distributed collection of servers that hosts software and infrastructure, and it is accessed over the internet.
+Cloud Computing: Cloud computing refers to the on-demand availability of computing resources, such as data storage, servers, networking capabilities, and software, over the internet.
+Cloud computing enables various operations such as:
+    Developing new applications and services
+    Storage, backup, and recovery of data
+    Hosting blogs and websites
+    Delivery of software on demand
+Benefits of Cloud Computing :
+    Cost Savings – Pay only for what you use without investing in physical hardware.
+    Scalability – Instantly scale resources up or down based on demand.
+    Performance – Reduced latency and improved application performance.
+    Reliability – Easier and cost-effective backup and disaster recovery.
+    Productivity – Reduces IT management overhead and setup time.
+    Security – Offers strong protection for data and applications against threats.
+Cloud Deployment Models:
+    A cloud deployment model fundamentally determines where the infrastructure for your deployment exists and who owns and controls that infrastructure. It also          figures out the nature and intention of the cloud.
+Public Cloud:
+    In a public cloud, computing resources such as servers, storage, and applications are owned and operated by a third-party cloud service provider and delivered 
+    over the internet.
+Advantages of Public Cloud : Minimal Investment, No Setup Cost, No Infrastructure Management, No Maintenance, Dynamic Scalability
+Disadvantages of Public Cloud :Less Secure, Low Customization, Limited Control, Compliance Issues.
+Private Cloud:
+    A Private Cloud is a secure, isolated cloud environment dedicated to a single organization, offering exclusive access to computing resources. It can be hosted        on- premises or by a third-party, and is managed internally or externally, providing enhanced control, security, and customization.
+Key Characteristics of Private Cloud: Exclusive Use, Enhanced Security, Customization, Compliance-Friendly 
+Advantages: Better Control, Data Security & Privacy, Legacy System Support, Customization  Disadvantages: Less Scalable, Costly.
+Hybrid Cloud: 
+    A Hybrid Cloud is a combination of both public and private clouds, allowing data and applications to be shared between them. It offers the flexibility to run         sensitive workloads in the private cloud while leveraging the scalability and cost-effectiveness of the public cloud.
+Advantages of the Hybrid Cloud Model: Flexibility and Control, Cost Efficiency, Security 
+Disadvantages of the Hybrid Cloud Model: Complex Management, Latency Issues.
+Community Cloud:
+    A Community Cloud is a cloud infrastructure shared by several organizations with similar requirements (e.g., compliance, mission, or security). It can be managed     by one or more organizations or a third party.
+Advantages: Cost Effective, Enhanced Security, Resource Sharing | Disadvantages: Limited Scalability, Less Customization
+Multi-Cloud:
+    Multi-Cloud is a cloud strategy where an organization uses services from multiple public cloud providers (like AWS, Azure, GCP) to distribute workloads and avoid     dependency on a single vendor.
+Advantages: Reduced Latency, High Availability | Disadvantages: Complex Management, Security Risks.
+Cloud Computing Services:
+Infrastructure as a Service (IaaS) :
+    Is a cloud computing model that delivers virtualized computing resources—like servers, storage, and networking—over the internet. It eliminates the need for         organizations to own physical hardware. Infrastructure as a Service (IaaS) is a cloud computing service model that provides virtualized computing resources over      the internet. In an IaaS model, organizations access and manage fundamental IT resources—such as virtual machines, storage, networks, and operating systems—on        demand from a cloud provider. This eliminates the need for organizations to invest in and maintain their own physical IT infrastructure.
+Key Characteristics of IaaS: 
+    Resources as a Service, Pay-as-you-go Pricing, Scalability, Self-Service Provisioning, Virtualization, Multi-tenancy 
+Benefits of IaaS: 
+    Cost Reduction, Scalability and Flexibility, Faster Deployment, Increased Reliability and Availability, Focus on Core Business, Global Reach, Business Continuity and Disaster Recovery 
+Challenges of IaaS: 
+    Security, Compliance, Integration with Existing Systems, Dependency on Provider, Managing Costs, Limited Control, Vendor Lock-in
+Common Use Cases for IaaS:
+    Web Hosting, Test and Development Environments, Data Storage Backup and Recovery, High-Performance Computing (HPC), Big Data Analytics, Virtual Data Centers, Business Continuity and Disaster Recovery.
+Examples of IaaS Providers: 
+    AWS, Microsoft Azure, Google Cloud Platform (GCP), DigitalOcean, Linode, Rackspace, IBM Cloud, Alibaba Cloud, Oracle Cloud
+Platform as a Service:
+    Platform as a Service (PaaS) provides a cloud-based runtime environment where developers can build, test, deploy, and manage applications without handling the        underlying infrastructure. The platform handles hardware, OS, networking, storage, and scalability.
+Key Characteristics of PaaS: 
+    Complete Development and Deployment Environment, Focus on Application Development, Built-in Scalability and Availability, Support for Multiple Programming 
+Benefits of PaaS: 
+    Accelerated Development Cycles, Reduced Complexity, Lower Costs, Scalability and High Availability,  Improved Collaboration, Faster Time to Market, Automatic Updates and Patching 
+Challenges of PaaS:
+    Vendor Lock-in, Limited Control, Security Concerns, Integration with Existing Systems, Customization Limitations, Performance Issues
+Common Use Cases for PaaS: 
+    Web Application Development and Hosting, Mobile Application Development, API Development and Management, Data Analytics and Business Intelligence, Stream Processing, IoT Application Development, Team Collaboration and Workflow Automation |
+Examples of PaaS Providers: 
+    AWS Elastic Beanstalk, Google App Engine, Microsoft Azure App Service, Heroku, OpenShift, Cloud Foundry, Engine Yard, Mendix, OutSystems
+Software as a Service (SaaS) :
+    SaaS is also known as "On-Demand Software". It is a software distribution model in which applications are hosted by a cloud service provider and made available       to users over the internet. SaaS eliminates the need for organizations to install, maintain, or manage software locally.
+Key Characteristics of SaaS: 
+    Web-Based Access, Centralized Hosting, Subscription-Based Pricing, No Infrastructure Management, Automatic Updates and Patching, Scalability and Flexibility, Accessibility from Anywhere, Multi-tenancy Architecture 
+Benefits of SaaS: 
+    Lower Upfront Costs, Reduced IT Overhead, Faster Implementation, Automatic Updates and Maintenance, Scalability and Flexibility, Accessibility, 
+Challenges of SaaS: 
+    Data Security and Privacy, Vendor Lock-in, Limited Customization, Integration Issues, Dependency on Internet Connectivity, Control Over Features 
+Common Use Cases for SaaS: 
+    Customer Relationship Management (CRM), Enterprise Resource Planning (ERP), Email and Collaboration, Office Productivity Suites, Human Resources Management           (HRM), Content Management Systems (CMS), Project Management, Accounting Software, Marketing Automation, Video Conferencing 
+Examples of SaaS Providers: 
+    Salesforce, Microsoft, Google, Adobe, Zoom, Dropbox, Slack, ServiceNow, Atlassian, Oracle
+XaaS (Anything as a Service):
+    A broad term that refers to delivering anything as a service over the internet, including IaaS, PaaS, SaaS, and more.
+Advantages:
+    Scalable to changing needs, Flexible across various IT services, Cost-effective, pay-as-you-go
+Disadvantages:
+    Vendor dependency, Limited flexibility for unique workloads, Integration issues with legacy systems
+FaaS (Function as a Service):
+    A serverless model where small pieces of code (functions) run in response to events, without managing infrastructure.
+Advantages:
+    Highly scalable & cost-effective, No server management, Write functions in any language, Great for microservices and event-driven apps
+
+Disadvantages:
+    Cold start latency, Limited infrastructure control, Security & scalability concerns
+Example Use Case: 
+    Image resizing in a photo app when a file is uploaded.
+Popular Providers: 
+    AWS Lambda, Google Cloud Functions, Azure Functions, IBM OpenWhisk
+Security Concerns in IaaS, PaaS, and SaaS
+IaaS Security Risks:
+IaaS exposes more of the infrastructure to users, which means managing the operating system, applications, and network security is the user's responsibility.
+Common Attacks:
+    Data breaches
+    Denial-of-service (DoS) attacks
+    Vulnerabilities in virtual machine configurations
+PaaS Security Risks:
+In PaaS, security is shared between the cloud provider and the customer. While the cloud provider manages the infrastructure, the customer needs to focus on securing their application and data.
+Common Attacks:
+    Misconfiguration vulnerabilities
+    Insufficient authentication and authorization
+    API security risks
+SaaS Security Risks:
+SaaS models have the least amount of user control, as the application is fully managed by the provider. However, there are still potential security concerns related to user data and access management.
+Common Attacks:
+    Data leakage
+    Account hijacking
+    Service interruptions due to cyberattacks
+Functional Requirements (FR):
+Functional requirements specify what a system should do. They describe the specific behaviors, actions, or functions the system must have to meet the needs of its users. Essentially, functional requirements define the capabilities of the system.
+Characteristics of Functional Requirements:
+    Focus on specific actions or operations of the system.
+    Can be expressed as user stories or use cases.
+    Directly related to the system's core functionality.
+Non-Functional Requirements (NFR):
+Non-functional requirements specify how a system performs its functions. They define the quality attributes and operational aspects of the system, such as its performance, scalability, security, and availability. These requirements help ensure the system works effectively and meets the users' expectations in terms of system qualities.
+Examples of Non-Functional Requirements:
+    Performance: The system must handle 1000 concurrent users without degradation in speed.
+    Scalability: The system must be able to scale horizontally to support a growing number of users.
+    Availability: The system must have 99.9% uptime.
+    Security: The system must encrypt sensitive user data using AES-256 encryption.
+    Usability: The system’s user interface must be simple and intuitive for new users.
+Compile-Time Caching:
+    Compile-time caching stores pre-compiled assets or intermediate build results (like Java bytecode, bundled JavaScript, or optimized images) during the build process.
+Benefits:
+    Faster builds.
+    Efficient resource usage.
+    Reduces build time across environments and teams.
+Runtime Caching:
+    Runtime caching refers to storing data during application execution, so it doesn't need to be fetched or recalculated repeatedly.
+Benefits:
+    Better performance.
+    Reduced server load.
+    Improved scalability.
+Alpine Linux:
+    Alpine Linux is a security-oriented, lightweight Linux distribution designed for power users who need performance and simplicity. It is musl libc- and BusyBox-based, making it extremely small and efficient.
+Common Use Cases:
+    Microservices in containers (e.g., Go, Node.js, Python apps).
+    CI/CD tools and pipelines.
+    Serverless functions (custom containers).
+    Lightweight VMs in edge computing.
+Feature Benefit
+    Small Image Size : Typically ~5 MB, reducing image size and speeding up pulls.
+    Minimal Packages : Only the essentials, reducing attack surface.
+    Security Focused : Hardened kernel, PaX, grsecurity patches (historically).
+    Customizability : Easy to extend and build from.
+NSG(Network Security Group):
+    NSG (Network Security Group) is a security feature in Microsoft Azure that acts as a virtual firewall to control inbound and outbound traffic to Azure resources      at the network level.
+    NSGs allow or deny traffic based on rules like source/destination IP addresses, ports, and protocols.
+Where NSGs are Applied: NSGs can be associated with:
+    Network Interfaces (NICs) – for controlling traffic to individual virtual machines.
+    Subnets – for controlling traffic to all resources in the subnet.
+NSG Rule Key Components: Name, Priority, Direction, Access, Protocol, Source, Source Port Range, Destination, Destination Port Range.
+Best Practices for NSGs: Least Privilege, Subnet-Level NSGs, NIC-Level NSGs, Avoid Conflicting Rules, Log and Monitor, Use Service Tags, Use Application Security Groups (ASGs).
+pplication Security Groups (ASGs): Group VMs logically and apply rules to ASGs instead of IPs.
+
+Types of Kubernetes Scaling :
+    Scaling in Kubernetes ensures your application runs smoothly under varying workloads by adjusting pods or nodes automatically or manually.
+There are three main types of scaling:
+1. Horizontal Pod Autoscaler (HPA)
+2. Vertical Pod Autoscaler (VPA)
+3. Cluster Autoscaler
+Horizontal Pod Autoscaler (HPA):
+What it does:
+    Automatically increases or decreases the number of pod replicas based on resource utilization or custom metrics.
+Metrics Used:
+    CPU utilization (default)
+    Memory (via custom metrics adapter)
+    Custom metrics (e.g., queue length, request rate)
+Components Required:
+    Metrics Server (must be installed in the cluster)
+    Deployment or StatefulSet with resources.requests.cpu and resources.limits.cpu defined
+How it works:
+    HPA controller checks metrics every 15 seconds (configurable).
+    Compares current usage with the target average utilization.
+    Adjusts the number of replicas in the deployment.
+Vertical Pod Autoscaler (VPA):
+What it does:
+    Automatically adjusts the CPU and memory requests/limits for a pod.
+Why Use It:
+    When app performance depends more on pod capacity per instance rather than number of pods.
+    Ideal for batch jobs, stateful apps, or low request-volume services.
+How it works:
+    Monitors usage patterns over time
+    Recommends or applies updated resource requests
+    Can evict and restart pods with the new values
+Cluster Autoscaler:
+What it does:
+    Automatically adds/removes nodes to/from the Kubernetes cluster based on unschedulable pods.
+Why Use It:
+    Helps save costs in cloud environments (e.g., AWS, GCP, Azure) by adjusting the size of the cluster dynamically.
+Requirements:
+    Must be deployed separately in the cluster
+    Needs cloud provider support (e.g., auto-scaling groups on AWS EC2)
+How it works:
+    Periodically checks if any pods are in a Pending state due to lack of resources.
+    If yes, adds more nodes (up to a max limit).
+    If nodes are underutilized for a long time, it scales them down.
+
+
+
 24-04-2025
 Azure Tenants: 
   An Azure Tenant is a dedicated, isolated instance of Azure Active Directory (Azure AD) assigned to an organization when it signs up for Azure, Microsoft 365, or other Microsoft services.
