@@ -1,3 +1,4 @@
+24-04-2025
 Azure Tenants: 
   An Azure Tenant is a dedicated, isolated instance of Azure Active Directory (Azure AD) assigned to an organization when it signs up for Azure, Microsoft 365, or other Microsoft services.
   It manages users, groups, devices, policies, and apps.
