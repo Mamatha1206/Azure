@@ -962,9 +962,59 @@ Steps to Create Automation Using Azure Automation:
     To run the automation task on a schedule, go to the Runbook and select Link to Schedule.
     Create a new schedule with a cron expression (e.g., once a day, once an hour) and link it to your runbook.
 
+28-04-2025
+Infrastructure as Code (IaC) :
+        IaC is the process of managing and provisioning computing infrastructure (servers, databases, networking, etc.) through machine-readable definition files, rather than physical hardware configuration or interactive configuration tools.
 
+Popular IaC Tools :
+Tool	              Type	                                                Description
+Terraform	       Declarative            	                            Manages cloud infrastructure (multi-cloud support).
+Ansible	           Imperative (also declarative with playbooks)	        Configuration management and automation.
+CloudFormation	   Declarative	                                        AWS-native IaC service.
+Pulumi	           Declarative/Imperative	                            Uses general-purpose languages (Python, Go, etc.).
+Chef/Puppet	       Imperative/Declarative	                            Configuration management with strong DSLs.
 
-
+Benefits of IaC :
+Speed & Efficiency: Automate infrastructure provisioning in minutes.
+Consistency: Reduce human error by reusing tested code.
+Scalability: Easily replicate environments (e.g., staging, prod).
+Versioning: Treat infrastructure like application code (Git, CI/CD).
+Cost Efficiency: Remove unused resources with automation.
+IaC Workflow :
+Write infrastructure code.
+Plan: Preview changes (terraform plan).
+Apply: Deploy changes (terraform apply).
+Monitor: Ensure infrastructure is healthy.
+Destroy (optional): Remove infrastructure (terraform destroy).
+Challenges :
+State Management: Tools like Terraform require a state file; must be managed securely.
+Drift Detection: Manual changes can cause configuration drift.
+Security: Misconfigured scripts can expose critical data or cost resources.
+IaC mainly has three categories:
+1. Infrastructure Provisioning Tools :
+        Infrastructure Provisioning Tools are software tools used to automatically create, configure, and manage IT infrastructure such as virtual machines, networks, storage, databases, and more—using code instead of manual processes.
+Terraform – Open-source, multi-cloud support, uses HCL, declarative syntax.
+AWS CloudFormation – AWS-native, declarative YAML/JSON templates.
+Azure Bicep / ARM Templates – Azure-native, Bicep is a simpler DSL for ARM.
+Google Cloud Deployment Manager – GCP-native, uses YAML or Python/Jinja2.
+Pulumi – Multi-cloud, supports real programming languages (Python, Go, etc.).
+Crossplane – Kubernetes-native, manages cloud infra via CRDs.
+OpenStack Heat – Orchestration tool for OpenStack environments.
+2. Configuration Management Tools :
+        Configuration Management Tools are software tools that automate the setup, configuration, and ongoing management of servers and applications after the infrastructure is provisioned.
+Ansible – Agentless, uses SSH, written in YAML (Playbooks), easy to learn and use, ideal for automation and configuration tasks.
+Puppet – Agent-based, declarative DSL, suited for large-scale infrastructure, follows a client-server model.
+Chef – Agent-based, uses Ruby DSL, great for complex workflows, follows client-server or solo mode.
+SaltStack (Salt) – Can be agentless or agent-based, uses YAML (SLS files), fast and scalable, supports event-driven automation.
+CFEngine – Lightweight, secure, agent-based, suitable for massive-scale infrastructures, one of the oldest tools in this space.
+3. Server Templating Tools :
+        Server Templating tools are used to automatically create and configure server environments or machine images in a consistent, repeatable manner.
+Packer – Creates machine images automatically for different platforms from a single configuration.
+Vagrant – Manages and sets up virtual machines, often used for development environments.
+Dockerfile – Defines how to build a Docker container with the required software and settings.
+Kickstart – Automates the installation and setup of Red Hat-based Linux systems.
+Preseed – Automates the installation and setup of Debian/Ubuntu Linux systems.
+Cloud-Init – Configures cloud instances automatically when they first start on platforms like AWS, Azure, or GCP.
 
 
 
