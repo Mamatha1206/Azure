@@ -1096,3 +1096,564 @@ How It Works:
 1. When you run terraform init, Terraform will fetch the provider plugins and create the .terraform.lock.hcl file.
 2. The lockfile contains metadata about the provider’s version, including checksums for verification to ensure no tampering or corruption of the provider's binaries.
 3. If you change the provider version or update dependencies, Terraform will update the lockfile with the new provider versions.
+
+What is .tf File in Terraform?
+•	.tf files are Terraform configuration files where you write the instructions for infrastructure.
+•	These files describe what you want (servers, databases, networking, etc.).
+
+Terraform Advantages :
+1. Automation – Automates infrastructure provisioning and eliminates manual setup.
+2. Continuity – Ensures consistent and incremental infrastructure changes over time.
+3. Speed – Rapid deployment using dependency graph and parallel resource creation.
+4. Reusability – Promotes reusable modules to avoid repetition and standardize code.
+5. Consistency – Guarantees identical infrastructure across environments and teams.
+6. Version Control – Enables tracking, collaboration, and rollback via Git integration.
+7. Security – Secures infrastructure with secrets management and encrypted state files.
+
+State Management in Terraform :
+        Terraform keeps track of the real-world infrastructure in a file called terraform.tfstate.
+
+Key Points:
+        Stores metadata about resources.
+        Allows Terraform to detect drift and plan changes.
+        Can be stored remotely (S3, Azure Storage, Terraform Cloud) for team collaboration.
+Benefits:
+        Centralized source of truth.
+        Supports terraform plan to preview changes before applying.
+
+What is Policy as a Code?
+Policy as Code is the practice of writing and managing governance, compliance, and security policies in code form using high-level, declarative languages. These policies are automatically enforced during infrastructure provisioning.
+Instead of manually reviewing security or compliance rules, PaC embeds those rules directly into your DevOps pipelines, ensuring they are checked consistently and automatically.
+
+Why Policy as a Code?
+Manual policy enforcement is:
+Error-prone
+Slow
+Inconsistent across teams
+PaC solves these problems by:
+Automating policy checks
+Preventing violations before deployment
+Making policies version-controlled, testable, and auditable
+Where is Policy as Code Used?
+PaC is used in:
+Terraform pipelines – Enforce rules before applying infrastructure.
+CI/CD pipelines – Block deployments if non-compliant.
+Cloud platforms:
+Azure → Azure Policy
+AWS → SCPs, Config Rules
+GCP → Organization Policies
+Kubernetes → OPA + Gatekeeper for validating manifests
+Benefits of Policy as a Code:
+    Automation, Consistency, Speed and Scalability, Security and Compliance, Auditability, Testability, Flexibility.
+
+CI/CD in Terraform 
+CI/CD (Continuous Integration and Continuous Deployment) in Terraform refers to automating the process of planning, validating, and applying infrastructure changes using Terraform within a CI/CD pipeline.
+What is CI/CD in Terraform?
+CI (Continuous Integration): Every time infrastructure code (like .tf files) is pushed to a Git repo, the pipeline automatically:
+Validates syntax (terraform validate)
+Checks formatting (terraform fmt)
+Runs security scans or policy checks (e.g., with OPA or Sentinel)
+Generates an execution plan (terraform plan)
+CD (Continuous Deployment/Delivery): If the plan looks good (and optionally approved), it:
+Applies changes automatically (terraform apply)
+Manages infrastructure updates safely and consistently
+Common CI/CD Tools Used with Terraform
+        GitHub Actions, GitLab CI, Azure DevOps, Jenkins, CircleCI, Bitbucket Pipelines
+Typical Terraform CI/CD Pipeline Stages:
+        Terraform Init – Initializes the working directory.
+        Terraform Validate – Validates the configuration syntax.
+        Terraform Fmt – Ensures consistent formatting.
+        Terraform Plan – Creates an execution plan showing what will change.
+        Policy Check – Optional (Sentinel/OPA) policy validation.
+        Manual Approval – Optional step for review.
+        Terraform Apply – Provisions or updates infrastructure.
+Benefits :
+        Faster and safer infrastructure changes
+        Reduced manual errors
+        Full version control and traceability
+        Easier collaboration among teams
+Semantic Versioning (SemVer) is a versioning system for software, typically formatted as MAJOR.MINOR.PATCH.
+        MAJOR (2): Indicates backward-incompatible changes. Updating may require modifying your code.
+        MINOR (40): Adds new features in a backward-compatible way. You can use the new features, but existing code remains unaffected.
+        PATCH (0): Fixes bugs or provides minor improvements without changing functionality. Safe to upgrade.
+For example, 2.40.0:
+        The MAJOR version is 2, meaning some breaking changes might have occurred.
+        The MINOR version is 40, meaning new features were added.
+        The PATCH version is 0, meaning no bug fixes have been released yet.
+When specifying version constraints in Terraform, you can control what updates to allow. For example:
+        ~> 2.40.0 allows 2.40.x but not 2.41.0.
+        >= 2.40.0, < 3.0.0 allows all versions up to 3.0.0 but not including it.
+This system helps maintain compatibility while providing new features and bug fixes over time.
+
+why storing Terraform state remotely is important:
+    Collaboration: Enables multiple team members to work with the same state file.
+    State Locking: Prevents concurrent updates and conflicts using locks (e.g., in S3 with DynamoDB).
+    Data Integrity: Ensures high availability and durability of state files.
+    Backup and Recovery: Easier to back up and recover state files when stored remotely.
+    Version Control: Maintains a version history of the state, allowing rollback.
+    Security: Enables encryption and fine-grained access control for sensitive data.
+    Centralized Management: Organizes state files for different environments and resources.
+    Terraform Cloud/Enterprise Features: Provides additional collaboration, policy enforcement, and access control.
+
+Step-by-Step: Remote State Storage in Azure
+1. Create Azure Storage Resources
+Run these commands in your terminal:
+# Create a resource group
+az group create --name tfstate-rg --location southindia
+# Create a storage account (name must be globally unique)
+az storage account create \
+  --name mamathastatestorage \
+  --resource-group tfstate-rg \
+  --location southindia \
+  --sku Standard_LRS
+# Create a blob container to store the state file
+az storage container create \
+  --name tfstate \
+  --account-name mamathastatestorage
+2. Get the Storage Account Key
+Run the following command to retrieve the storage account key:
+az storage account keys list \
+  --resource-group tfstate-rg \
+  --account-name mamathastatestorage
+Copy one of the keys from the output.
+
+3. Configure Backend in Your Terraform Code
+Create a backend.tf file (or include this block inside your main.tf):
+terraform {
+  backend "azurerm" {
+    resource_group_name   = "tfstate-rg"
+    storage_account_name  = "mamathastatestorage"
+    container_name        = "tfstate"
+    key                   = "terraform.tfstate"  # This is the blob name (state file)
+  }
+}
+4. Set Access Key as Environment Variable
+Before initializing Terraform, export the storage account key:
+export ARM_ACCESS_KEY="your-access-key-here"
+Alternatively, you can use a Terraform-managed service principal with environment variables like ARM_CLIENT_ID, ARM_CLIENT_SECRET, etc.
+5. Initialize Terraform
+Run the following command to initialize Terraform:
+terraform init
+You'll see a prompt asking if you want to migrate the existing local state to the new backend — answer yes.
+This setup ensures that your Terraform state is stored securely and is easily accessible for collaboration across teams.
+
+Azure provides different types of storage accounts :
+1. Blob Storage:
+Purpose: Used to store unstructured data, such as text, images, videos, backups, and logs.
+Key Feature: Data is stored as blobs (binary large objects) in containers.
+Use Cases: Storing large files like media files, backups, and data lakes.
+Blob Types:
+Block Blobs: Ideal for storing text or binary data.
+Append Blobs: Used for logging.
+Page Blobs: Used for Azure VMs' OS and data disks.
+
+2. File Storage:
+Purpose: Provides managed file shares that can be accessed via SMB (Server Message Block) protocol.
+Key Feature: Ideal for applications that need shared file storage, accessible from multiple VMs or systems.
+Use Cases: Lift-and-shift applications that need shared access to files.
+Access: Can be accessed by both Windows and Linux systems.
+
+3. Table Storage (NoSQL):
+Purpose: A NoSQL key-value store for structured data that doesn't require a relational database.
+Key Feature: Stores data in tables with rows and columns, but without fixed schemas (flexible and scalable).
+Use Cases: Storing application data, session state, and metadata in a schema-less format.
+Access: Suitable for large-scale, low-latency applications that need a simple NoSQL data store.
+Partition Key: The Partition Key is used to group related rows for efficient data distribution and retrieval in a table (ensures data is stored in the same partition).
+Row Key: The Row Key uniquely identifies each record within a partition, ensuring the uniqueness of rows within the partition.
+
+4. Queue Storage:
+Purpose: Provides message queuing for communication between different parts of an application.
+Key Feature: Stores messages that can be accessed by different applications or services.
+Use Cases: Decoupling components, handling background tasks, and processing large amounts of data asynchronously.
+Access: Messages can be retrieved from queues using the REST API or SDKs.
+
+Create a Container through Azure Portal (Storage Browser)
+1. Create a Storage Account:
+Log in to the Azure portal and create a storage account using the following steps:
+Go to the storage account service.
+Click Create, choose the required settings (like Name as mamathasa1, Location as South India, etc.), and click Create.
+2. Go to Storage Browser:
+After the storage account is created, go to the Storage Browser by selecting your storage account from the Azure portal.
+3. Click on Containers and Add the Container:
+In the Storage Browser, click on Containers.
+Click + Container to create a new container.
+Enter the name as mamatha and set the access level to Private (or choose based on your needs).
+Click Create.
+4. Upload the File and Generate SAS:
+After creating the container, click on it to open it.
+Click Upload, select the file to upload, and click Upload.
+After the file is uploaded, click on the file, then click Generate SAS to create a Shared Access Signature (SAS).
+Copy the Blob URL from the SAS generation section.
+Open the copied Blob URL in your browser to access the file.
+--------------------------------------------------------------
+Create Storage Account (Container) through Terraform:
+resource "azurerm_resource_group" "example" {
+  name     = "mamatha-rg5"
+  location = "southindia"
+}
+
+resource "azurerm_storage_account" "example" {
+  name                     = "mamathasa1"
+  resource_group_name      = azurerm_resource_group.example.name
+  location                 = azurerm_resource_group.example.location
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+}
+
+resource "azurerm_storage_container" "example" {
+  name                   = "mamatha"
+  storage_account_name   = azurerm_storage_account.example.name
+  container_access_type  = "private"
+}
+
+terraform {
+  required_providers {
+    azurerm = {
+      source = "hashicorp/azurerm"
+      version = "2.40.0"
+    }
+  }
+}
+
+provider "azurerm" {
+  features {}
+}
+This Terraform configuration creates:
+A resource group (mamatha-rg5).
+A storage account (mamathasa1).
+A container (mamatha) within the storage account.
+After running terraform apply, the container will be created. we can then upload a file manually and generate a SAS URL to access it.
+--------------------------------------------------------------------------------
+Mount Storage Account (File Share) into a VM :
+        Create Storage Account: Create a storage account in Azure (via the portal or Terraform).
+        Go to Storage Browser: Navigate to Storage Browser and select File Shares. Click + File Share, name it, and create it.
+        Get Mount Script: In the File Share section, click Connect to get the Linux mount script.
+        Create VM: Create a VM in Azure, set up SSH access, and generate an SSH key (ssh-keygen -t rsa).
+        SSH into VM: Access the VM using SSH (ssh -i path_to_key user@public_ip).
+        Mount File Share: Follow the provided Linux mount script to mount the file share on the VM.
+        Create Folder: Switch to superuser (sudo su), run the mount command, and create a folder. The folder will appear in the Azure portal under the File Share.
+
+Database Concepts:
+Pages: A database page is a fixed-size block of data stored in memory or on disk. It is the smallest unit of data retrieval in a database.
+Key-Value Pair: A key-value pair stores data as a unique key and its corresponding value, commonly used in NoSQL databases for fast retrieval.
+Documentation: Database documentation refers to the information about the database schema, relationships, queries, and how data is stored and accessed.
+Wide Column Database (NoSQL): A Wide Column Database stores data in columns rather than rows, providing better performance and flexibility for read and write operations on large datasets (e.g., Cassandra).
+
+Microservice Communication:
+Synchronous Communication: In synchronous communication, services interact in real-time, where the client waits for a response. A load balancer is needed to distribute requests and ensure high availability.
+Asynchronous Communication:
+Queue-Based: In this setup, the client sends a message to a broker (e.g., RabbitMQ, Kafka). The client or service picks the message when ready. It does not require a load balancer, as it is decoupled.
+Public Communication: This could involve services sending and receiving messages via a public API, again decoupling them but relying on mechanisms like API gateways instead of load balancers.
+--------------------------------------------------------------------------------------------------------------------------------------
+VMScaleset Full Step-by-Step: Apache with VM, VM Image, VMSS, Load Balancer
+🔹 Step 1: Create a VM and Connect via SSH
+Go to Azure Portal → Search for "Virtual Machines" → Click “Create”
+Fill in: Resource Group: mamatharg1, VM Name: apache-vm, Region: East US (or any choice), Image: Ubuntu 22.04 LTS, Authentication: SSH public key, Username: azureuser
+Click Next through the tabs and Create
+Once created, go to the Overview tab and get the public IP
+
+Connect via SSH:
+ssh -i ~/.ssh/id_rsa azureuser@<public-ip>
+🔹 Step 2: Install Apache and Open HTTP Port
+On the VM (via SSH):
+sudo apt update
+sudo apt install -y apache2
+sudo systemctl start apache2
+sudo systemctl enable apache2
+In Azure Portal:
+Go to the VM > Networking
+Click "Add inbound port rule"
+Add: Port: 80, Protocol: TCP, Action: Allow, Name: Allow-HTTP
+✅ Now test by opening the VM's public IP in a browser. You should see the Apache default page.
+🔹 Step 3: Create VNet with Public and Private Subnets
+Go to Virtual Networks → Click "Create"
+Fill:
+Name: apache-vnet, Region: Same as VM, Resource Group: mamatharg1, Under IP Addressing
+define:
+Address Space: 10.0.0.0/16
+Subnet 1 (public-subnet): 10.0.1.0/24
+Subnet 2 (private-subnet): 10.0.2.0/24
+Review and Create
+🔹 Step 4: Capture an Image of the VM
+Note: Capturing an image deallocates (stops) the VM.
+Go to your VM → Click "Capture" in the top menu
+Fill: Name: apache-image, Resource Group: mamatharg1
+Select Automatically delete this VM after creating image (if desired)
+Click Review + Create → Then Create
+🔹 Step 5: Create a VM Scale Set (VMSS) from the Image
+Go to Virtual Machine Scale Sets → Click "Create"
+Fill: Name: apache-vmss, Resource Group: mamatharg1, Image: Select the custom image you captured, Region: Same, Instance count: 2 or more, Authentication: Same SSH key
+Load Balancing tab:
+Select Create a new load balancer
+Choose Public IP
+Backend Pool: myBackEndPool
+Under Networking, choose:
+VNet: apache-vnet
+Subnet: public-subnet
+Click Review + Create → Then Create
+🔹 Step 6: Access Apache via Load Balancer Public IP
+Once deployed, go to:
+Load Balancer > Frontend IP Configuration
+Copy the public IP
+Open the IP in your browser:
+http://<load-balancer-ip>
+✅ You should now see the Apache page served by one of the VMSS instances!
+--------------------------------------------------------------------------------------------------------------------------------
+
+Deploying an Azure Linux Virtual Machine Scale Set (VMSS) with Load Balancer using Terraform:
+provider "azurerm" {
+  features {}
+  subscription_id = "bf7e75db-e819-49ca-b6d2-69c32a2353fe"
+}
+ 
+# Existing Resource Group
+resource "azurerm_resource_group" "rg" {
+  name = "mamatha-rg"
+  location = "eastus"
+}
+ 
+# Virtual Network and Subnets
+resource "azurerm_virtual_network" "vnet" {
+  name                = "mamatha-vnet"
+  address_space       = ["10.55.0.0/16"]
+  location            = resource.azurerm_resource_group.rg.location
+  resource_group_name = resource.azurerm_resource_group.rg.name
+}
+ 
+resource "azurerm_subnet" "public_subnet" {
+  name                 = "public"
+  resource_group_name  = resource.azurerm_resource_group.rg.name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+  address_prefixes     = ["10.55.1.0/24"]
+}
+ 
+resource "azurerm_subnet" "private_subnet" {
+  name                 = "private"
+  resource_group_name  = resource.azurerm_resource_group.rg.name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+  address_prefixes     = ["10.55.2.0/24"]
+}
+ 
+# Load Balancer and Public IP
+resource "azurerm_public_ip" "lb_public_ip" {
+  name                = "mamatha-public-ip"
+  location            = resource.azurerm_resource_group.rg.location
+  resource_group_name = resource.azurerm_resource_group.rg.name
+  allocation_method   = "Static"
+  sku                 = "Standard"
+}
+ 
+resource "azurerm_lb" "lb" {
+  name                = "mamatha-lb"
+  location            = resource.azurerm_resource_group.rg.location
+  resource_group_name = resource.azurerm_resource_group.rg.name
+  sku                 = "Standard"
+ 
+  frontend_ip_configuration {
+    name                 = "PublicFrontend"
+    public_ip_address_id = azurerm_public_ip.lb_public_ip.id
+  }
+}
+ 
+resource "azurerm_lb_backend_address_pool" "backend_pool" {
+  name            = "mamatha-backend-pool"
+  loadbalancer_id = azurerm_lb.lb.id
+}
+ 
+resource "azurerm_lb_probe" "http_probe" {
+  name            = "http-probe"
+  loadbalancer_id = azurerm_lb.lb.id
+  protocol        = "Tcp"
+  port            = 80
+}
+ 
+# Corrected `azurerm_lb_rule` (no `resource_group_name`, and using `backend_address_pool_ids`)
+resource "azurerm_lb_rule" "http_rule" {
+  name                           = "http-rule"
+  loadbalancer_id                = azurerm_lb.lb.id
+  protocol                       = "Tcp"
+  frontend_port                  = 80
+  backend_port                   = 80
+  frontend_ip_configuration_name = "PublicFrontend"
+  backend_address_pool_ids       = [azurerm_lb_backend_address_pool.backend_pool.id]
+  probe_id                       = azurerm_lb_probe.http_probe.id
+}
+ 
+# NSG for VMSS Subnet
+resource "azurerm_network_security_group" "web_nsg" {
+  name                = "mamatha-nsg"
+  location            = resource.azurerm_resource_group.rg.location
+  resource_group_name = resource.azurerm_resource_group.rg.name
+ 
+  security_rule {
+    name                       = "AllowHTTP"
+    priority                   = 100
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "80"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+}
+ 
+resource "azurerm_subnet_network_security_group_association" "nsg_assoc" {
+  subnet_id                 = azurerm_subnet.private_subnet.id
+  network_security_group_id = azurerm_network_security_group.web_nsg.id
+}
+ 
+# VM Scale Set
+resource "azurerm_linux_virtual_machine_scale_set" "vmss" {
+  name                             = "mamatha-vmss"
+  resource_group_name              = resource.azurerm_resource_group.rg.name
+  location                         = resource.azurerm_resource_group.rg.location
+  sku                              = "Standard_B1s"
+  instances                        = 3
+  admin_username                   = "mamatha"
+  admin_password                   = "qwerty@1234"  # Replace in real deployments
+  disable_password_authentication = false
+  source_image_id                  = "/subscriptions/bf7e75db-e819-49ca-b6d2-69c32a2353fe/resourceGroups/mamatha-rg/providers/Microsoft.Compute/galleries/mamathagallery/images/mamatha-image/versions/0.0.1"
+  upgrade_mode                     = "Manual"
+  # security_type = "TrustedLaunch"
+  secure_boot_enabled = true
+
+custom_data = base64encode(<<EOF
+#!/bin/bash
+apt-get update
+apt-get install -y apache2
+systemctl start apache2
+systemctl enable apache2
+echo "<h1>Hello from Apache on VMSS!</h1>" > /var/www/html/index.html
+EOF
+  )
+
+  network_interface {
+    name    = "vmss-nic"
+    primary = true
+ 
+    ip_configuration {
+      name                                   = "internal"
+      primary                                = true
+      subnet_id                              = azurerm_subnet.private_subnet.id
+      load_balancer_backend_address_pool_ids = [azurerm_lb_backend_address_pool.backend_pool.id]
+    }
+  }
+ 
+  os_disk {
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
+  }
+}
+ 
+# Output Public IP of Load Balancer
+output "load_balancer_ip" {
+  value = azurerm_public_ip.lb_public_ip.ip_address
+}
+-------------------------------------------------------------------
+Meta Arguments in terraform: 
+In Terraform, meta-arguments are special arguments you can use inside resource, module, or data block configurations to control how the resource is managed — not the resource itself. They don’t configure the actual infrastructure but influence how Terraform behaves when creating, updating, or destroying the resource.
+1. count
+Used to create multiple instances of a resource by specifying a number.
+2. for_each
+Allows iteration over a map or set to create multiple uniquely keyed resources.
+3. provider
+Specifies which provider configuration to use, especially useful in multi-account or multi-region deployments.
+4. depends_on
+Explicitly defines dependencies between resources when Terraform cannot infer them automatically.
+5. lifecycle
+Manages how resources are created, updated, or destroyed, with options like prevent_destroy, create_before_destroy, and ignore_changes.
+
+Health Checks in Kubernetes :
+In Kubernetes, health checks (also called probes) are used to monitor the status of application containers. There are three main types:
+1. Liveness Probe :
+Purpose: To check if the application is alive (i.e., still running properly).
+If the liveness probe fails, Kubernetes restarts the container.
+Useful when your application might hang or enter a non-recoverable state.
+Helps automatically recover from crashes or deadlocks.
+2. Readiness Probe :
+Purpose: To check if the application is ready to serve traffic.
+If the readiness probe fails, the container is removed from the Service endpoints.
+It prevents traffic from being routed to a container that’s not ready.
+Useful during startup, maintenance, or when the app is temporarily not available.
+3. Startup Probe :
+Purpose: To check if the application has started successfully.
+Used for slow-starting applications.
+If the startup probe fails repeatedly, the container is killed.
+Once this probe passes, liveness and readiness probes take over.
+--------------------------------------------------------------
+Azure Table Storage + Logic App:
+    -Create Table in Storage Browser.
+    -Create Logic App → Go to Logic App Designer.
+    -Add trigger (e.g., HTTP request).
+    -Add Insert Entity action for Table Storage.
+    -Fill in PartitionKey, RowKey, and custom fields.
+    -Save & Run the Logic App.
+    -Go to Table in Storage Browser to see inserted data.
+Azure Queue Storage + Logic App :
+    -Create Queue in Storage Browser.
+    -Create Logic App → Go to Logic App Designer.
+    -Add trigger (e.g., Recurrence or HTTP).
+    -Add Put Message in Queue action.
+    -Fill in queue name and message content.
+    -Save & Run the Logic App.
+    -Check the Queue in Storage Browser for messages.
+--------------------------------------------------------------------
+In Azure terraform learned about meta-args and the count function 
+terraform {
+  required_providers {
+    azurerm = {
+      source = "hashicorp/azurerm"
+      version = "4.27.0"
+    }
+  }
+}
+provider "azurerm" {
+  # Configuration options
+    features{}
+}
+resource "azurerm_resource_group" "example" {
+  name     = "mamatharg1${count.index+1}"
+  location = "central india"
+  count = 2
+}
+----------------------------------------------------------------------
+Variables in Terraform :
+In Terraform, variables are used to make configurations more dynamic and reusable. There are three main types of variables:
+1. Input Variables (variable)
+Purpose: Accept values from the user or calling module.
+Defined using: variable blocks.
+Usage: Allows passing data into modules or Terraform configurations.
+Example:
+variable "location" {
+  type    = string
+  default = "East US"
+}
+Used as:
+location = var.location
+Can be provided via .tfvars, environment variables, or CLI (-var flag).
+
+2. Local Values (locals)
+Purpose: Assign reusable expressions or calculated values.
+Defined using: locals block.
+Usage: Simplifies repeated or complex expressions.
+Example:
+locals {
+  vm_name = "my-vm-${var.environment}"
+}
+Used as:
+name = local.vm_name
+Not passed in from outside — used internally in  configuration.
+
+3. Output Values (output)
+Purpose: Show values after a Terraform run or pass data between modules.
+Defined using: output blocks.
+Usage: Useful for displaying info like IP addresses, IDs, etc.
+Example:
+output "vm_ip" {
+  value = azurerm_linux_virtual_machine.vm.private_ip_address
+}
+Outputs are displayed after terraform apply and can be used by other modules when called.
+
+
+
